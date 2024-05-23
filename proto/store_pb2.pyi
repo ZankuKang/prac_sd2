@@ -54,6 +54,32 @@ class RestoreResponse(_message.Message):
     success: bool
     def __init__(self, success: bool = ...) -> None: ...
 
+class CommitRequest(_message.Message):
+    __slots__ = ("key", "value")
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    key: str
+    value: str
+    def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+
+class CommitResponse(_message.Message):
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...
+
+class SlaveInfo(_message.Message):
+    __slots__ = ("address",)
+    ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    address: str
+    def __init__(self, address: _Optional[str] = ...) -> None: ...
+
+class Response(_message.Message):
+    __slots__ = ("success",)
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    def __init__(self, success: bool = ...) -> None: ...
+
 class Empty(_message.Message):
     __slots__ = ()
     def __init__(self) -> None: ...

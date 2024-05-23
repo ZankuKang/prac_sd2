@@ -1,0 +1,11 @@
+master:
+  ip: localhost
+  port: 32770
+
+slaves:
+  - nodeid: slav1
+    ip: localhost
+    port: 32771
+  - nodeid: slav2
+    ip: localhost
+    port: 32772

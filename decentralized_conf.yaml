@@ -1,0 +1,10 @@
+workers:
+  - nodeid: 1
+    ip: localhost
+    port: 32770
+  - nodeid: 2
+    ip: localhost
+    port: 32771
+  - nodeid: 3
+    ip: localhost
+    port: 32773
