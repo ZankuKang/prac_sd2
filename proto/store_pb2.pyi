@@ -75,10 +75,12 @@ class SlaveInfo(_message.Message):
     def __init__(self, address: _Optional[str] = ...) -> None: ...
 
 class Response(_message.Message):
-    __slots__ = ("success",)
+    __slots__ = ("store", "success")
+    STORE_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    store: str
     success: bool
-    def __init__(self, success: bool = ...) -> None: ...
+    def __init__(self, store: _Optional[str] = ..., success: bool = ...) -> None: ...
 
 class Empty(_message.Message):
     __slots__ = ()

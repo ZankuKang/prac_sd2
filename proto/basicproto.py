@@ -1,6 +1,6 @@
 from proto import store_pb2
 import time
-import random
+from centralized import Master
 import json
 
 
@@ -52,9 +52,11 @@ class MasterNodeService(BasicAPIService):
         self.dis_queue = []
 
     def put(self, put_request, context):
-        # We have to implement the two phase commit before
-        self.storage[put_request.key] = put_request.value
-        return store_pb2.PutResponse(success=True)
+        if Master.Two_PC(put_request, context):
+            self.storage[put_request.key] = put_request.value
+            return store_pb2.PutResponse(success=True)
+        else:
+            return store_pb2.PutResponse(success=False)
 
     def setDicoverQueue(self, dis_queue):
         self.dis_queue = dis_queue
