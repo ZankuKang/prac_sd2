@@ -68,7 +68,8 @@ message SlaveInfo {
 }
 
 message Response {
-  bool success = 1;
+  string store = 1;
+  bool success = 2;
 }
 
 message Empty {}
