@@ -19,11 +19,12 @@ def start_service():
     server.start()
     server.wait_for_termination()
 
+
 def Two_PC(put_request, context):
     # We get the nodes that are registered in master
     registeredNodes = master_servicer.getDiscoverQueue()
-    for node in  registeredNodes:
-        channel = grpc.insecure_channel(node) # node = IP:PORT
+    for node in registeredNodes:
+        channel = grpc.insecure_channel(node)  # node = IP:PORT
         stub = store_pb2_grpc.KeyValueStoreStub(channel)
         request = store_pb2.CommitRequest(key=put_request.key, value=put_request.value)
         can_node_commit = stub.canCommit(request)
@@ -34,7 +35,7 @@ def Two_PC(put_request, context):
         stub = store_pb2_grpc.KeyValueStoreStub(channel)
         commit = store_pb2.CommitRequest(key=put_request.key, value=put_request.value)
         have_commited = stub.doCommit(commit)
-        if not  have_commited.success:
+        if not have_commited.success:
             return False
     return True
 
@@ -47,4 +48,3 @@ def main():
 
     while True:
         time.sleep(100000)
-

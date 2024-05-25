@@ -17,8 +17,6 @@ service KeyValueStore {
 
   rpc doCommit(CommitRequest) returns (CommitResponse);
 
-  rpc abortCommit(CommitRequest) returns (CommitResponse);
-
   rpc registerSlave(SlaveInfo) returns (Response);
 }
 

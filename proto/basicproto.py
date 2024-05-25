@@ -1,6 +1,6 @@
 from proto import store_pb2
 import time
-from centralized import Master
+from centralizedDir import Master
 import json
 
 
@@ -48,7 +48,7 @@ class BasicAPIService:
 
 class MasterNodeService(BasicAPIService):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.dis_queue = []
 
     def put(self, put_request, context):

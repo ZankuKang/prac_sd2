@@ -44,11 +44,6 @@ class KeyValueStoreStub(object):
                 request_serializer=proto_dot_store__pb2.CommitRequest.SerializeToString,
                 response_deserializer=proto_dot_store__pb2.CommitResponse.FromString,
                 )
-        self.abortCommit = channel.unary_unary(
-                '/distributedstore.KeyValueStore/abortCommit',
-                request_serializer=proto_dot_store__pb2.CommitRequest.SerializeToString,
-                response_deserializer=proto_dot_store__pb2.CommitResponse.FromString,
-                )
         self.registerSlave = channel.unary_unary(
                 '/distributedstore.KeyValueStore/registerSlave',
                 request_serializer=proto_dot_store__pb2.SlaveInfo.SerializeToString,
@@ -97,12 +92,6 @@ class KeyValueStoreServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def abortCommit(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def registerSlave(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -139,11 +128,6 @@ def add_KeyValueStoreServicer_to_server(servicer, server):
             ),
             'doCommit': grpc.unary_unary_rpc_method_handler(
                     servicer.doCommit,
-                    request_deserializer=proto_dot_store__pb2.CommitRequest.FromString,
-                    response_serializer=proto_dot_store__pb2.CommitResponse.SerializeToString,
-            ),
-            'abortCommit': grpc.unary_unary_rpc_method_handler(
-                    servicer.abortCommit,
                     request_deserializer=proto_dot_store__pb2.CommitRequest.FromString,
                     response_serializer=proto_dot_store__pb2.CommitResponse.SerializeToString,
             ),
@@ -259,23 +243,6 @@ class KeyValueStore(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/distributedstore.KeyValueStore/doCommit',
-            proto_dot_store__pb2.CommitRequest.SerializeToString,
-            proto_dot_store__pb2.CommitResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def abortCommit(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/distributedstore.KeyValueStore/abortCommit',
             proto_dot_store__pb2.CommitRequest.SerializeToString,
             proto_dot_store__pb2.CommitResponse.FromString,
             options, channel_credentials,

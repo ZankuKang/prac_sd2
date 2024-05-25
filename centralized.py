@@ -1,22 +1,23 @@
-from centralized import Master, Slave
+import time
+
+from centralizedDir import Master, Slave
 import threading
 
 
 def start_master():
-    master = threading.Thread(target=Master.main())
+    master = threading.Thread(target=Master.main)
     master.start()
 
 
 def start_slaves():
-    ports = [32771, 32772]
-    num_slaves = len(ports)
-    for i in range(num_slaves):
-        slave_th = threading.Thread(target=Slave.main(ports[i]))
-        slave_th.start()
+    slave_th = threading.Thread(target=Slave.main, args=(32771,))
+    slave_th.start()
+    slave_th2 = threading.Thread(target=Slave.main, args=(32772,))
+    slave_th2.start()
 
 
-start_slaves()
 start_master()
+time.sleep(3)
+start_slaves()
 while True:
     pass
-
