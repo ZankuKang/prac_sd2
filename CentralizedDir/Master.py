@@ -28,6 +28,7 @@ def startService():
 def Two_PC(put_request):
     channels = []
     stubs = []
+    commit_pet = store_pb2.CommitRequest(key=put_request.key, value=put_request.value)
     try:
         for slave in slaves:
             channel = grpc.insecure_channel(slave)
@@ -35,10 +36,12 @@ def Two_PC(put_request):
             channels.append(channel)
             stubs.append(stub)
 
+        for stub in stubs:
+            can_com = stub.canCommit(commit_pet)
+            if not can_com.success:
+                return False
 
-        for slave in slaves:
-            channel = grpc.insecure_channel(slave)
-            stub = store_pb2_grpc.KeyValueStoreStub(channel)
+        for stub in stubs:
             do_com = stub.doCommit(store_pb2.CommitRequest(key=put_request.key, value=put_request.value))
             if not do_com.success:
                 return False

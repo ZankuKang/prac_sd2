@@ -71,6 +71,7 @@ class StorageBasicService:
         except FileNotFoundError:
             print("Unable to write to storage")
 
+
 class MasterStorageService(StorageBasicService):
 
     def __init__(self):
