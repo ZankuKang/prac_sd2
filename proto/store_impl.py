@@ -98,5 +98,74 @@ class MasterStorageService(StorageBasicService):
         return store_pb2.Response(store=(json.dumps(self.storage)), success=True)
 
 
+class DecentralizedService(StorageBasicService):
+
+    def __init__(self):
+        super().__init__()
+        self.size = 3
+        self.port = 53
+        from DescentralizedDir import DesNode
+        self.desnode = DesNode
+
+    def setVote(self, size):
+        self.size = size
+
+    def setPort(self, port):
+        self.port = port
+
+    def getPort(self):
+        return self.port
+
+    def get(self, get_request, context):
+        local_val = self.storage.get(get_request.key)
+        value = self.desnode.askVoteGet(get_request, local_val, self.size)
+        if value is not None:
+            return store_pb2.GetResponse(value=value, found=True)
+        else:
+            return store_pb2.GetResponse(value="", found=False)
+
+    def voteGet(self, vote_request, context):
+        time.sleep(self.slow_secs)
+        value = self.storage.get(vote_request.key)
+        if value is not None:
+            return store_pb2.voteGetResponse(success=True, value=value, size=self.size)
+        else:
+            return store_pb2.voteGetResponse(success=False, value=value, size=self.size)
+
+    def put(self, put_request, context):
+        if self.desnode.askVotePut(put_request, self.size):
+            self.storage[put_request.key] = put_request.value
+            self.saveStorageDes(put_request.key, put_request.value)
+            return store_pb2.PutResponse(success=True)
+        else:
+            return store_pb2.PutResponse(success=False)
+
+    def votePut(self, put_request, context):
+        time.sleep(self.slow_secs)
+        return store_pb2.votePutResponse(success=True, size=self.size)
+
+    def loadStorageDes(self):
+        try:
+            store = open("storage" + str(self.port) + ".txt", "r")
+            pairs = store.readlines()
+            for pair in pairs:
+                pair = pair.strip()
+                key, value = pair.split(":")
+                self.storage[key] = value
+            store.close()
+        except FileNotFoundError:
+            store = open("storage" + str(self.port) + ".txt", 'w')
+            store.close()
+
+    def saveStorageDes(self, key, value):
+        try:
+            store = open("storage" + str(self.port) + ".txt", 'w')
+            store.write(key + ":" + value + "\n")
+            store.close()
+        except FileNotFoundError:
+            print("Unable to write to storage")
+
+
 basic_servicer = StorageBasicService()
 master_servicer = MasterStorageService()
+descen_servicer = DecentralizedService()

@@ -1,3 +1,4 @@
+from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Optional as _Optional
@@ -81,6 +82,30 @@ class Response(_message.Message):
     store: str
     success: bool
     def __init__(self, store: _Optional[str] = ..., success: bool = ...) -> None: ...
+
+class voteGetRequest(_message.Message):
+    __slots__ = ("key",)
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    key: str
+    def __init__(self, key: _Optional[str] = ...) -> None: ...
+
+class voteGetResponse(_message.Message):
+    __slots__ = ("success", "value", "size")
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    SIZE_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    value: str
+    size: int
+    def __init__(self, success: bool = ..., value: _Optional[str] = ..., size: _Optional[int] = ...) -> None: ...
+
+class votePutResponse(_message.Message):
+    __slots__ = ("success", "size")
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    SIZE_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    size: int
+    def __init__(self, success: bool = ..., size: _Optional[int] = ...) -> None: ...
 
 class Empty(_message.Message):
     __slots__ = ()

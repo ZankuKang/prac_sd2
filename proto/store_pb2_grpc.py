@@ -74,6 +74,16 @@ class KeyValueStoreStub(object):
                 request_serializer=proto_dot_store__pb2.SlaveInfo.SerializeToString,
                 response_deserializer=proto_dot_store__pb2.Response.FromString,
                 _registered_method=True)
+        self.voteGet = channel.unary_unary(
+                '/distributedstore.KeyValueStore/voteGet',
+                request_serializer=proto_dot_store__pb2.voteGetRequest.SerializeToString,
+                response_deserializer=proto_dot_store__pb2.voteGetResponse.FromString,
+                _registered_method=True)
+        self.votePut = channel.unary_unary(
+                '/distributedstore.KeyValueStore/votePut',
+                request_serializer=proto_dot_store__pb2.PutRequest.SerializeToString,
+                response_deserializer=proto_dot_store__pb2.votePutResponse.FromString,
+                _registered_method=True)
 
 
 class KeyValueStoreServicer(object):
@@ -123,6 +133,19 @@ class KeyValueStoreServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def voteGet(self, request, context):
+        """Requests for Decentralized
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def votePut(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_KeyValueStoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -160,6 +183,16 @@ def add_KeyValueStoreServicer_to_server(servicer, server):
                     servicer.registerSlave,
                     request_deserializer=proto_dot_store__pb2.SlaveInfo.FromString,
                     response_serializer=proto_dot_store__pb2.Response.SerializeToString,
+            ),
+            'voteGet': grpc.unary_unary_rpc_method_handler(
+                    servicer.voteGet,
+                    request_deserializer=proto_dot_store__pb2.voteGetRequest.FromString,
+                    response_serializer=proto_dot_store__pb2.voteGetResponse.SerializeToString,
+            ),
+            'votePut': grpc.unary_unary_rpc_method_handler(
+                    servicer.votePut,
+                    request_deserializer=proto_dot_store__pb2.PutRequest.FromString,
+                    response_serializer=proto_dot_store__pb2.votePutResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -351,6 +384,60 @@ class KeyValueStore(object):
             '/distributedstore.KeyValueStore/registerSlave',
             proto_dot_store__pb2.SlaveInfo.SerializeToString,
             proto_dot_store__pb2.Response.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def voteGet(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/distributedstore.KeyValueStore/voteGet',
+            proto_dot_store__pb2.voteGetRequest.SerializeToString,
+            proto_dot_store__pb2.voteGetResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def votePut(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/distributedstore.KeyValueStore/votePut',
+            proto_dot_store__pb2.PutRequest.SerializeToString,
+            proto_dot_store__pb2.votePutResponse.FromString,
             options,
             channel_credentials,
             insecure,
