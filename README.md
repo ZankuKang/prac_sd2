@@ -3,7 +3,14 @@
 ```
 Project/
 │
+├── CentralizedDir/
+│   ├── Master.py
+│   └── Slave.py
+│
+├── DescentralizedDir/
+│   └── DesNode.py
 ├── proto/
+│   ├── store_impl.proto
 │   ├── store.proto
 │   ├── store_pb2.py
 │   └── store_pb2_grpc.py
@@ -13,9 +20,14 @@ Project/
 ├── centralized.py
 ├── decentralized.py
 ├── eval/
+│   ├── centralized_config.yaml
+│   ├── decentralized.py
+│   ├── decentralized_config.yaml
 │   ├── test_centralized_system.py
+│   ├── eval.py
 │   └── test_decentralized_system.py
-│
+├── centralized.py
+├── requirements.txt
 └── ...
 ```
 
@@ -57,10 +69,35 @@ Project/
 
 - **eval/**: Directory containing evaluation scripts and tests.
 
-  - **test_centralized_system.py**: Script containing unit tests for the centralized system.
+  - **centralized_system_tests.py**: Script containing unit tests for the centralized system.
   
-  - **test_decentralized_system.py**: Script containing unit tests for the decentralized system.
+  - **decentralized_system_tests.py**: Script containing unit tests for the decentralized system.
 
 Each component of the project is organized into its respective directory, facilitating clear separation of concerns and ease of navigation. The `eval` directory specifically houses test scripts for evaluating the functionality and correctness of the implemented systems.
 
 > **Note:** Students are required to define the necessary stubs for implementing the Two Phase Commit (2PC) protocol and for node registration in the system. These stubs must be manually added to the store.proto file by the students as part of their implementation.
+
+## Description
+> In this task, we have implemented two implementations of a distributed key-value storage system using Python and gRPC ‘protobuffers’. The first implementation approach follows a centralized model with a master node and a set of two slave nodes, using the Two-Phase Commit (2PC) protocol to ensure consistency in the data. The second implementation approach is decentralized and uses a weighted quorum-based protocol to coordinate read and write operations among all active nodes. We evaluated and compared both implementations in terms of consistency and performance using the provided eval.py, centralized_system_tests.py and decentralized_system_tests.py.
+
+## How to Run it
+
+Open a terminal and run the centralized.py file (make sure you're using the project's venv):
+
+```python centralized.py```
+
+Open a terminal and run the decentralized.py file:
+
+```python decentralized.py```
+
+Open a terminal and run the centralized_system_tests.py file:
+
+```python eval/centralized_system_tests.py```
+
+Open a terminal and run the decentralized_system_tests.py file:
+
+```python eval/decentralized_system_tests.py```
+
+Open a terminal and run the eval.py file:
+
+```python eval/eval.py```

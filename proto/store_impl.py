@@ -42,6 +42,13 @@ class StorageBasicService:
     def registerSlave(self, slave_info, context):
         return store_pb2.Response(store="", success=False)
 
+    # All decentralized functions are illegal for centralized slaves
+    def voteGet(self, vote_request, context):
+        return store_pb2.voteGetResponse(success=False, value=None, size=0)
+
+    def votePut(self, put_request, context):
+        return store_pb2.votePutResponse(success=False, size=0)
+
     # 2PC functions
     def canCommit(self, commit_request, context):
         time.sleep(self.slow_secs)
