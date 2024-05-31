@@ -7,7 +7,7 @@ from proto.store_impl import master_servicer
 storage = {}
 slaves = []
 
-
+# Loads the file to the master node and starts it
 def main():
     master_servicer.setStorage(storage)
     master_servicer.loadStorage()
@@ -25,6 +25,7 @@ def startService():
     server.wait_for_termination()
 
 
+# 2PC's algorithm implementation
 def Two_PC(put_request):
     channels = []
     stubs = []

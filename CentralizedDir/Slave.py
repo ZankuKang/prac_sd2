@@ -7,7 +7,7 @@ import json
 
 storage = {}
 
-
+# Loads the file to the slave and starts it
 def main(port):
     basic_servicer.setStorage(storage)
     registerThisSlave(port)
@@ -24,6 +24,9 @@ def startService(port):
     server.start()
     server.wait_for_termination()
 
+
+# Lets the master node know this slave is active and ready to be used, so the master
+# can register it and have it in consideration for the 2PC
 def registerThisSlave(port):
     channel = grpc.insecure_channel("localhost:32770")
     stub = store_pb2_grpc.KeyValueStoreStub(channel)

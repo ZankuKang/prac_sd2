@@ -6,6 +6,10 @@ quorum_read = 2
 quorum_write = 3
 neighbours = ["localhost:32770", "localhost:32771", "localhost:32772"]
 
+# The quorum voting algorithm to accept (or refuse) a put petition.
+# We allow a dead/partitioned node to not count towards this voting, so
+# nodes in different partitions may be able to still satisfy put petitions
+# (granting us Partition-resilience)
 
 def askVotePut(put_request, size):
     votes = size
@@ -32,6 +36,9 @@ def askVotePut(put_request, size):
             return False
 
 
+# The quorum voting algorithm, but for get petitions. Just like the previous method,
+# partitioned node may still be able to reply to this petition. We obtain the maximum value
+# from the voting and return it
 def askVoteGet(get_request, value, size):
     votes = {value: size}
     for neigh in neighbours:
@@ -55,6 +62,8 @@ def askVoteGet(get_request, value, size):
         return None
 
 
+# Starts the node, loads its specific file, checks its port to set its weight, and deletes himself from his
+# neighbours list
 def main(port):
     from proto.store_impl import descen_servicer
     descen_servicer.setPort(port)

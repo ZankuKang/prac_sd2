@@ -2,7 +2,9 @@ from proto import store_pb2
 import time
 import json
 
-
+# Basic class that will implement the store.proto functions
+# In particular, this one will implement the methods required for
+# centralized slaves
 class StorageBasicService:
 
     # Builder
@@ -72,6 +74,8 @@ class StorageBasicService:
             print("Unable to write to storage")
 
 
+# This class will inherit the previous functions while overriding
+# some methods, like put()
 class MasterStorageService(StorageBasicService):
 
     def __init__(self):
@@ -98,11 +102,15 @@ class MasterStorageService(StorageBasicService):
         return store_pb2.Response(store=(json.dumps(self.storage)), success=True)
 
 
+# Like the previous class, but this one implements the methods required for the
+# decentralized nodes
 class DecentralizedService(StorageBasicService):
 
     def __init__(self):
         super().__init__()
-        self.size = 3
+        # The node's vote size, initialized to 4 as a placeholder
+        self.size = 4
+        # The node's port, initialized to 53 because we like DNS
         self.port = 53
         from DescentralizedDir import DesNode
         self.desnode = DesNode
@@ -116,6 +124,8 @@ class DecentralizedService(StorageBasicService):
     def getPort(self):
         return self.port
 
+    # This method will require askVoteGet (implemented in DescentralizedDir.Desnode.py)
+    # to perform the quorum voting
     def get(self, get_request, context):
         local_val = self.storage.get(get_request.key)
         value = self.desnode.askVoteGet(get_request, local_val, self.size)
@@ -124,6 +134,7 @@ class DecentralizedService(StorageBasicService):
         else:
             return store_pb2.GetResponse(value="", found=False)
 
+    # Ths will be called when some has received a get petition
     def voteGet(self, vote_request, context):
         time.sleep(self.slow_secs)
         value = self.storage.get(vote_request.key)
@@ -144,6 +155,7 @@ class DecentralizedService(StorageBasicService):
         time.sleep(self.slow_secs)
         return store_pb2.votePutResponse(success=True, size=self.size)
 
+    # We create different files for the different nodes
     def loadStorageDes(self):
         try:
             store = open("storage" + str(self.port) + ".txt", "r")

@@ -1,6 +1,8 @@
 import threading
 import time
 
+# Creates the master and its slaves concurrently
+
 from CentralizedDir import Master, Slave
 
 master_th = threading.Thread(target=Master.main)
